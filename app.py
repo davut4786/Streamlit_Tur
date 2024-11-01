@@ -6,8 +6,11 @@ import os
 model_path = 'hastalikturu_model.pkl'
 
 if os.path.exists(model_path):
-    with open(model_path, 'rb') as file:
-        model = pickle.load(file)
+    if os.path.getsize(model_path) > 0:  # Check if the file is not empty
+        with open(model_path, 'rb') as file:
+            model = pickle.load(file)
+    else:
+        st.error("Model dosyası boş! Lütfen geçerli bir model dosyası yükleyin.")
 else:
     st.error("Model dosyası bulunamadı! Lütfen 'hastalikturu_model.pkl' dosyasının var olduğundan emin olun.")
 
