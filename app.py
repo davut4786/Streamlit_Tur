@@ -21,21 +21,21 @@ st.title("Hastalık Durumu Tahmin Uygulaması")
 tur = st.selectbox("Tür", options=["Seç", "Kedi", "Köpek"])
 sistem = st.selectbox("Sistem", options=["Seç", "Bilinmiyor", "Boşaltım", "Deri", "Dolaşım", "Mix (en az 2 sistem)", "Sindirim", "Sinir", "Solunum"])
 
-# Diğer veriler için sayısal giriş alanları (varsayılan boş)
-cBasebC = st.number_input("cBasebC", value=None)
-cBaseEcfc = st.number_input("cBaseEcfc", value=None)
-HCO3Pc = st.number_input("HCO3Pc", value=None)
-p50c = st.number_input("p50c", value=None)
-cHCO3Pst = st.number_input("cHCO3Pst", value=None)
-cNa = st.number_input("cNa", value=None)
-FHHb = st.number_input("FHHb", value=None)
-sO2 = st.number_input("sO2", value=None)
-GRAN = st.number_input("GRAN", value=None)
-LYM = st.number_input("LYM", value=None)
-MON_A = st.number_input("MON_A", value=None)
-HCT = st.number_input("HCT", value=None)
-MCH = st.number_input("MCH", value=None)
-MCHC = st.number_input("MCHC", value=None)
+# Diğer veriler için sayısal giriş alanları (varsayılan boş, iki ondalık basamak)
+cBasebC = st.number_input("cBasebC", format="%.2f", value=None, step=0.01)
+cBaseEcfc = st.number_input("cBaseEcfc", format="%.2f", value=None, step=0.01)
+HCO3Pc = st.number_input("HCO3Pc", format="%.2f", value=None, step=0.01)
+p50c = st.number_input("p50c", format="%.2f", value=None, step=0.01)
+cHCO3Pst = st.number_input("cHCO3Pst", format="%.2f", value=None, step=0.01)
+cNa = st.number_input("cNa", format="%.2f", value=None, step=0.01)
+FHHb = st.number_input("FHHb", format="%.2f", value=None, step=0.01)
+sO2 = st.number_input("sO2", format="%.2f", value=None, step=0.01)
+GRAN = st.number_input("GRAN", format="%.2f", value=None, step=0.01)
+LYM = st.number_input("LYM", format="%.2f", value=None, step=0.01)
+MON_A = st.number_input("MON_A", format="%.2f", value=None, step=0.01)
+HCT = st.number_input("HCT", format="%.2f", value=None, step=0.01)
+MCH = st.number_input("MCH", format="%.2f", value=None, step=0.01)
+MCHC = st.number_input("MCHC", format="%.2f", value=None, step=0.01)
 
 # Evet/Hayır seçenekleri için `selectbox` seçenekleri
 abdominal_agri = st.selectbox("Abdominal Ağrı", options=["Yok", "Var"])
@@ -100,7 +100,7 @@ if st.button("Tahmin Et"):
             1 if ishal == "Var" else 0,
             1 if istahsizlik == "Var" else 0,
             1 if kanama == "Var" else 0,
-            1 if kusma == "Evet" else 0,
+            1 if kusma == "Var" else 0,
             1 if oksuruk == "Var" else 0
         ]
 
