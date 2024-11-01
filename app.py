@@ -22,7 +22,7 @@ tur = st.selectbox("Tür", options=["Seç", "Kedi", "Köpek"])
 sistem = st.selectbox("Sistem", options=["Seç", "Bilinmiyor", "Boşaltım", "Deri", "Dolaşım", "Mix (en az 2 sistem)", "Sindirim", "Sinir", "Solunum"])
 
 # Diğer veriler için sayısal giriş alanları (varsayılan boş, iki ondalık basamak)
-cBasebC = st.number_input("cBasebC",value=None format="%.2f")
+cBasebC = st.number_input("cBasebC",value=None, format="%.2f")
 cBaseEcfc = st.number_input("cBaseEcfc", format="%.2f", value=None)
 HCO3Pc = st.number_input("HCO3Pc", format="%.2f", value=None)
 p50c = st.number_input("p50c", format="%.2f", value=None)
