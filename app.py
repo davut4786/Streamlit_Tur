@@ -100,7 +100,7 @@ if st.button("Tahmin Et"):
             1 if ishal == "Var" else 0,
             1 if istahsizlik == "Var" else 0,
             1 if kanama == "Var" else 0,
-            1 if kusma == "Var" else 0,
+            1 if kusma == "Evet" else 0,
             1 if oksuruk == "Var" else 0
         ]
 
