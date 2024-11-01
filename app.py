@@ -35,15 +35,15 @@ MCH = st.number_input("MCH", format="%.2f", step=0.01, value=None)
 MCHC = st.number_input("MCHC", format="%.2f", step=0.01, value=None)
 
 # Evet/Hayır seçenekleri için `selectbox` seçenekleri
-abdominal_agri = st.selectbox("Abdominal Ağrı", options=["Hayır", "Evet"])
-genel_durum = st.selectbox("Genel Durum", options=["Normal", "Hastalık"])
-idar_problemi = st.selectbox("İdrar Problemi", options=["Hayır", "Evet"])
-inkordinasyon = st.selectbox("İnkordinasyon", options=["Hayır", "Evet"])
-ishal = st.selectbox("İshal", options=["Hayır", "Evet"])
-istahsizlik = st.selectbox("İştahsızlık", options=["Hayır", "Evet"])
-kanama = st.selectbox("Kanama", options=["Hayır", "Evet"])
+abdominal_agri = st.selectbox("Abdominal Ağrı", options=["Yok", "Var"])
+genel_durum = st.selectbox("Genel Durum", options=["İyi", "Kötü"])
+idar_problemi = st.selectbox("İdrar Problemi", options=["Yok", "Var"])
+inkordinasyon = st.selectbox("İnkordinasyon", options=["Yok", "Var"])
+ishal = st.selectbox("İshal", options=["Yok", "Var"])
+istahsizlik = st.selectbox("İştahsızlık", options=["Yok", "Var"])
+kanama = st.selectbox("Kanama", options=["Yok", "Var"])
 kusma = st.selectbox("Kusma", options=["Hayır", "Evet"])
-oksuruk = st.selectbox("Öksürük", options=["Hayır", "Evet"])
+oksuruk = st.selectbox("Öksürük", options=["Yok", "Var"])
 
 # Tahmin işlemi
 if st.button("Tahmin Et"):
@@ -52,15 +52,15 @@ if st.button("Tahmin Et"):
         1 if tur == "Köpek" else 0,
         sistem.index(sistem),
         cBasebC, cBaseEcfc, HCO3Pc, p50c, cHCO3Pst, cNa, FHHb, sO2, GRAN, LYM, MON_A, HCT, MCH, MCHC,
-        1 if abdominal_agri == "Evet" else 0,
-        1 if genel_durum == "Hastalık" else 0,
-        1 if idar_problemi == "Evet" else 0,
-        1 if inkordinasyon == "Evet" else 0,
-        1 if ishal == "Evet" else 0,
-        1 if istahsizlik == "Evet" else 0,
-        1 if kanama == "Evet" else 0,
-        1 if kusma == "Evet" else 0,
-        1 if oksuruk == "Evet" else 0
+        1 if abdominal_agri == "Var" else 0,
+        1 if genel_durum == "Kötü" else 0,
+        1 if idar_problemi == "Var" else 0,
+        1 if inkordinasyon == "Var" else 0,
+        1 if ishal == "Var" else 0,
+        1 if istahsizlik == "Var" else 0,
+        1 if kanama == "Var" else 0,
+        1 if kusma == "Var" else 0,
+        1 if oksuruk == "Var" else 0
     ]
 
     # Model tahmini ve sonuç gösterme
