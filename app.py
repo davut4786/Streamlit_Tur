@@ -5,11 +5,15 @@ import os
 # Model dosyasının mevcut olup olmadığını kontrol edin
 model_path = 'hastalikturu_model.pkl'
 
-if os.path.exists(model_path):
+try:
     with open(model_path, 'rb') as file:
         model = pickle.load(file)
-else:
+except FileNotFoundError:
     st.error("Model dosyası bulunamadı! Lütfen 'hastalikturu_model.pkl' dosyasının var olduğundan emin olun.")
+    st.stop()  # Uygulamayı durdur
+except EOFError:
+    st.error("Model dosyası okunurken bir hata oluştu. Dosyanın bozulmuş olabileceğini kontrol edin.")
+    st.stop()  # Uygulamayı durdur
 
 st.title("Hastalık Tahmin Uygulaması")
 
