@@ -5,59 +5,38 @@ import os
 # Model dosyasının mevcut olup olmadığını kontrol edin
 model_path = 'hastalikturu_model.pkl'
 
-try:
+if os.path.exists(model_path):
     with open(model_path, 'rb') as file:
         model = pickle.load(file)
-except FileNotFoundError:
+else:
     st.error("Model dosyası bulunamadı! Lütfen 'hastalikturu_model.pkl' dosyasının var olduğundan emin olun.")
-    st.stop()  # Uygulamayı durdur
-except EOFError:
-    st.error("Model dosyası okunurken bir hata oluştu. Dosyanın bozulmuş olabileceğini kontrol edin.")
-    st.stop()  # Uygulamayı durdur
 
+# Streamlit uygulamanızın geri kalan kodları
 st.title("Hastalık Tahmin Uygulaması")
 
 # Kullanıcıdan verileri alın
-tur = st.selectbox("Tür", options=["Kedi", "Köpek"], index=0)
-sistem = st.selectbox("Sistem", options=["Bilinmiyor", "Boşaltım", "Deri", "Dolaşım", "Mix", "Sindirim", "Sinir", "Solunum"], index=0)
+tur = st.selectbox("Tür", options=["Kedi", "Köpek"])
+sistem = st.selectbox("Sistem", options=["Bilinmiyor", "Boşaltım", "Deri", "Dolaşım", "Mix", "Sindirim", "Sinir", "Solunum"])
 
 # Sayısal değerler için input alanları
-col1, col2, col3, col4, col5 = st.columns(5)
-with col1:
-    cBasebC = st.number_input("cBasebC", format="%.2f", step=0.01, min_value=0.0, value=0.0)
-with col2:
-    cBaseEcfc = st.number_input("cBaseEcfc", format="%.2f", step=0.01, min_value=0.0, value=0.0)
-with col3:
-    HCO3Pc = st.number_input("HCO3Pc", format="%.2f", step=0.01, min_value=0.0, value=0.0)
-with col4:
-    p50c = st.number_input("p50c", format="%.2f", step=0.01, min_value=0.0, value=0.0)
-with col5:
-    cHCO3Pst = st.number_input("cHCO3Pst", format="%.2f", step=0.01, min_value=0.0, value=0.0)
+cols = st.columns(5)  # 5 sütun oluştur
+cBasebC = cols[0].number_input("cBasebC", format="%.2f", value=0.0, step=0.01)
+cBaseEcfc = cols[1].number_input("cBaseEcfc", format="%.2f", value=0.0, step=0.01)
+HCO3Pc = cols[2].number_input("HCO3Pc", format="%.2f", value=0.0, step=0.01)
+p50c = cols[3].number_input("p50c", format="%.2f", value=0.0, step=0.01)
+cHCO3Pst = cols[4].number_input("cHCO3Pst", format="%.2f", value=0.0, step=0.01)
 
-# Diğer sayısal değişkenler için input alanları
-cNa = st.number_input("cNa", format="%.2f", step=0.01, min_value=0.0, value=0.0)
-FHHb = st.number_input("FHHb", format="%.2f", step=0.01, min_value=0.0, value=0.0)
-sO2 = st.number_input("sO2", format="%.2f", step=0.01, min_value=0.0, value=0.0)
-GRAN = st.number_input("GRAN", format="%.2f", step=0.01, min_value=0.0, value=0.0)
-LYM = st.number_input("LYM", format="%.2f", step=0.01, min_value=0.0, value=0.0)
-MON_A = st.number_input("MON_A", format="%.2f", step=0.01, min_value=0.0, value=0.0)
-HCT = st.number_input("HCT", format="%.2f", step=0.01, min_value=0.0, value=0.0)
-MCH = st.number_input("MCH", format="%.2f", step=0.01, min_value=0.0, value=0.0)
-MCHC = st.number_input("MCHC", format="%.2f", step=0.01, min_value=0.0, value=0.0)
+# Diğer sayısal değerler için ek sütunlar oluştur
+cols2 = st.columns(5)
+cNa = cols2[0].number_input("cNa", format="%.2f", value=0.0, step=0.01)
+FHHb = cols2[1].number_input("FHHb", format="%.2f", value=0.0, step=0.01)
+sO2 = cols2[2].number_input("sO2", format="%.2f", value=0.0, step=0.01)
+GRAN = cols2[3].number_input("GRAN", format="%.2f", value=0.0, step=0.01)
+LYM = cols2[4].number_input("LYM", format="%.2f", value=0.0, step=0.01)
 
-# Kategorik değişkenler için selectbox
-abdominal_agri = st.selectbox("Abdominal Ağrı", options=["Hayır", "Evet"])
-genel_durum = st.selectbox("Genel Durum", options=["Hayır", "Evet"])
-idar_problemi = st.selectbox("İdar Problemi", options=["Hayır", "Evet"])
-inkordinasyon = st.selectbox("İnkoordinasyon", options=["Hayır", "Evet"])
-ishal = st.selectbox("İshal", options=["Hayır", "Evet"])
-istahsizlik = st.selectbox("İstahsızlık", options=["Hayır", "Evet"])
-kanama = st.selectbox("Kanama", options=["Hayır", "Evet"])
-kusma = st.selectbox("Kusma", options=["Hayır", "Evet"])
-oksuruk = st.selectbox("Öksürük", options=["Hayır", "Evet"])
-
-# Tahmin et butonu
-if st.button("Tahmin Et", key="tahmin_et"):
+# Tahmin butonu
+if st.button("Tahmin Et"):
+    # Model tahminini çalıştırın ve sonucu gösterin
     veriler = [
         tur,
         sistem,
@@ -70,36 +49,15 @@ if st.button("Tahmin Et", key="tahmin_et"):
         FHHb,
         sO2,
         GRAN,
-        LYM,
-        MON_A,
-        HCT,
-        MCH,
-        MCHC,
-        abdominal_agri,
-        genel_durum,
-        idar_problemi,
-        inkordinasyon,
-        ishal,
-        istahsizlik,
-        kanama,
-        kusma,
-        oksuruk,
-    ]
-    
-    # Model tahminini çalıştırın ve sonucu gösterin
+        LYM
+    ]  # Gerekli tüm verileri ekleyin
     sonuc = model.predict([veriler])
     st.write(f"Tahmin Sonucu: {sonuc[0]}")
 
-# CSS ile görünümü özelleştirme
+# CSS ile kutuların etrafındaki kenarlıkları mavi yapalım
 st.markdown(
     """
     <style>
-    .stButton {
-        background-color: blue;
-        color: white;
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
     .stNumberInput {
         border: 2px solid blue;
     }
