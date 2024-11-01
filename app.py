@@ -18,6 +18,17 @@ st.title("Hastalık Tahmin Uygulaması")
 tur = st.selectbox("Tür", options=["Kedi", "Köpek"])
 sistem = st.selectbox("Sistem", options=["Bilinmiyor", "Boşaltım", "Deri", "Dolaşım", "Mix", "Sindirim", "Sinir", "Solunum"])
 
+# Diğer seçilen özellikler için selectboxlar ekleyin
+abdominal_agri = st.selectbox("Abdominal Ağrı", options=["Hayır", "Evet"])
+genel_durum = st.selectbox("Genel Durum", options=["Kötü", "İyi"])
+idar_problemi = st.selectbox("İdrar Problemi", options=["Hayır", "Evet"])
+inkordinasyon = st.selectbox("İnkordinasyon", options=["Hayır", "Evet"])
+ishal = st.selectbox("İshal", options=["Hayır", "Evet"])
+istahsizlik = st.selectbox("İstahsızlık", options=["Hayır", "Evet"])
+kanama = st.selectbox("Kanama", options=["Hayır", "Evet"])
+kusma = st.selectbox("Kusma", options=["Hayır", "Evet"])
+oksuruk = st.selectbox("Öksürük", options=["Hayır", "Evet"])
+
 # Sayısal değerler için input alanları
 cols = st.columns(5)  # 5 sütun oluştur
 cBasebC = cols[0].number_input("cBasebC", format="%.2f", value=0.0, step=0.01)
@@ -40,6 +51,15 @@ if st.button("Tahmin Et"):
     veriler = [
         tur,
         sistem,
+        abdominal_agri,
+        genel_durum,
+        idar_problemi,
+        inkordinasyon,
+        ishal,
+        istahsızlık,
+        kanama,
+        kusma,
+        oksuruk,
         cBasebC,
         cBaseEcfc,
         HCO3Pc,
