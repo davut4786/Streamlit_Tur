@@ -1,6 +1,7 @@
 import streamlit as st
 import pickle
 import os
+import numpy as np
 
 # Model dosyasının mevcut olup olmadığını kontrol edin
 model_path = 'hastalikturu_model.pkl'
@@ -26,7 +27,7 @@ with col2:
 
 with col3:
     cBasebC = st.number_input("cBasebC", format="%.2f", value=0.0, step=0.01, min_value=0.0)
-    
+
 with col4:
     cBaseEcfc = st.number_input("cBaseEcfc", format="%.2f", value=0.0, step=0.01, min_value=0.0)
 
@@ -105,11 +106,22 @@ with col24:
 with col25:
     oksuruk = st.selectbox("Öksürük", options=["Hayır", "Evet"])
 
-if st.button("Tahmin Et"):
-    # Model tahminini çalıştırın ve sonucu gösterin
-    veriler = [tur, sistem, cBasebC, cBaseEcfc, HCO3Pc, p50c, cHCO3Pst, cNa, FHHb, sO2, 
-               GRAN, LYM, MON_A, HCT, MCH, MCHC, abdominal_agri, genel_durum, idar_problemi, 
-               inkordinasyon, ishal, istahsızlık, kanama, kusma, oksuruk]
+# Butonu daha aşağıda konumlandırma
+st.markdown("<br><br>", unsafe_allow_html=True)  # Boşluk eklemek için
 
-    sonuc = model.predict([veriler])
+# Tahmin et butonu
+if st.button("Tahmin Et", key="tahmin_et", style="background-color: blue; color: white;"):
+    # Model tahminini çalıştırın ve sonucu gösterin
+    veriler = [
+        tur, sistem,
+        float(cBasebC), float(cBaseEcfc), float(HCO3Pc), float(p50c), float(cHCO3Pst), float(cNa),
+        float(FHHb), float(sO2), float(GRAN), float(LYM), float(MON_A),
+        float(HCT), float(MCH), float(MCHC), abdominal_agri, genel_durum,
+        idar_problemi, inkordinasyon, ishal, istahsızlık, kanama, kusma, oksuruk
+    ]
+
+    # Modelin beklediği formatı sağlamak için numpy dizisine çeviriyoruz
+    veriler = np.array(veriler).reshape(1, -1)  # Girdi dizisini 2D hale getiriyoruz
+
+    sonuc = model.predict(veriler)
     st.write(f"Tahmin Sonucu: {sonuc[0]}")
