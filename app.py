@@ -1,27 +1,24 @@
 import streamlit as st
-import anvil.server
+import pickle
 
-# Anvil sunucusuna bağlanma
-anvil.server.connect("server_KORPUEPN5NQLQLYFM2J65VBN-47GGCVO2CJ7A57PR")  # Anvil sunucusu anahtarınızı buraya ekleyin
+# Modeli yüklemek için gereken dosya yolu (modelinizi GitHub’a yüklediğinizi varsayarak)
+model_path = 'hastalikturu_model.pkl'
 
-# Başlık ve açıklama
-st.title("Hastalık Türü Tahmin Uygulaması")
-st.write("Lütfen aşağıdaki alanları doldurarak tahmin yapın.")
+# Modeli yükleyin
+with open(model_path, 'rb') as file:
+    model = pickle.load(file)
 
-# Dropdown seçenekleri
-tur_dict = {"Kedi": 0, "Köpek": 1}
-sistem_dict = {
-    "Bilinmiyor": 0, "Boşaltım": 1, "Deri": 2, "Dolaşım": 3,
-    "Mix": 4, "Sindirim": 5, "Sinir": 6, "Solunum": 7
-}
-binary_options = {"Hayır": 0, "Evet": 1}
-genel_durum_options = {"Normal": 0, "Hastalık": 1}
+# Streamlit başlık
+st.title("Hastalık Tahmin Uygulaması")
 
-# Kullanıcıdan giriş al
-tur = st.selectbox("Tür", list(tur_dict.keys()))
-sistem = st.selectbox("Sistem", list(sistem_dict.keys()))
+# Kullanıcı girişleri için alanlar oluştur
+tur = st.selectbox("Tür", [("Kedi", 0), ("Köpek", 1)])
+sistem = st.selectbox("Sistem", [
+    ("Bilinmiyor", 0), ("Boşaltım", 1), ("Deri", 2), 
+    ("Dolaşım", 3), ("Mix", 4), ("Sindirim", 5), 
+    ("Sinir", 6), ("Solunum", 7)
+])
 
-# Numerik alanlar için giriş al
 cBasebC = st.number_input("cBasebC", format="%.2f")
 cBaseEcfc = st.number_input("cBaseEcfc", format="%.2f")
 HCO3Pc = st.number_input("HCO3Pc", format="%.2f")
@@ -37,31 +34,29 @@ HCT = st.number_input("HCT", format="%.2f")
 MCH = st.number_input("MCH", format="%.2f")
 MCHC = st.number_input("MCHC", format="%.2f")
 
-# Diğer dropdown seçimleri
-abdominal_agri = st.selectbox("Abdominal Ağrı", list(binary_options.keys()))
-genel_durum = st.selectbox("Genel Durum", list(genel_durum_options.keys()))
-idar_problemi = st.selectbox("İdar Problemi", list(binary_options.keys()))
-inkordinasyon = st.selectbox("İnkordinasyon", list(binary_options.keys()))
-ishal = st.selectbox("İshal", list(binary_options.keys()))
-istahsizlik = st.selectbox("İştahsızlık", list(binary_options.keys()))
-kanama = st.selectbox("Kanama", list(binary_options.keys()))
-kusma = st.selectbox("Kusma", list(binary_options.keys()))
-oksuruk = st.selectbox("Öksürük", list(binary_options.keys()))
+abdominal_agri = st.selectbox("Abdominal Ağrı", [("Hayır", 0), ("Evet", 1)])
+genel_durum = st.selectbox("Genel Durum", [("Normal", 0), ("Hastalık", 1)])
+idar_problemi = st.selectbox("İdar Problemi", [("Hayır", 0), ("Evet", 1)])
+inkordinasyon = st.selectbox("İnkordinasyon", [("Hayır", 0), ("Evet", 1)])
+ishal = st.selectbox("İshal", [("Hayır", 0), ("Evet", 1)])
+istahsizlik = st.selectbox("İştahsızlık", [("Hayır", 0), ("Evet", 1)])
+kanama = st.selectbox("Kanama", [("Hayır", 0), ("Evet", 1)])
+kusma = st.selectbox("Kusma", [("Hayır", 0), ("Evet", 1)])
+oksuruk = st.selectbox("Öksürük", [("Hayır", 0), ("Evet", 1)])
 
 # Tahmin butonu
 if st.button("Tahmin Et"):
-    # Kullanıcı verilerini liste halinde düzenleme
+    # Model tahmini yapmak için verileri uygun formata getirin
     veriler = [
-        tur_dict[tur], sistem_dict[sistem], cBasebC, cBaseEcfc, HCO3Pc, p50c, 
-        cHCO3Pst, cNa, FHHb, sO2, GRAN, LYM, MON_A, HCT, MCH, MCHC,
-        binary_options[abdominal_agri], genel_durum_options[genel_durum], 
-        binary_options[idar_problemi], binary_options[inkordinasyon], 
-        binary_options[ishal], binary_options[istahsizlik], 
-        binary_options[kanama], binary_options[kusma], binary_options[oksuruk]
+        tur[1], sistem[1], cBasebC, cBaseEcfc, HCO3Pc, p50c, cHCO3Pst, 
+        cNa, FHHb, sO2, GRAN, LYM, MON_A, HCT, MCH, MCHC, 
+        abdominal_agri[1], genel_durum[1], idar_problemi[1], inkordinasyon[1], 
+        ishal[1], istahsizlik[1], kanama[1], kusma[1], oksuruk[1]
     ]
-    
-    # Model ile tahmin yapma
-    sonuc = anvil.server.call('model_tahmin', veriler)
 
-    # Sonucu göster
-    st.write(f"Tahmin Sonucu: {sonuc}")
+    # Model tahminini al
+    tahmin = model.predict([veriler])[0]
+
+    # Tahmin sonucunu göster
+    st.write(f"Tahmin Sonucu: {tahmin}")
+
