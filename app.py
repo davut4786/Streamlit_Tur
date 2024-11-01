@@ -15,20 +15,20 @@ else:
     st.error("Model dosyası bulunamadı! Lütfen 'hastalikturu_model.pkl' dosyasının var olduğundan emin olun.")
 
 # Streamlit başlık
-st.title("Hastalık Tahmin Uygulaması")
+st.title("Hastalık Durumu Tahmin Uygulaması")
 
 # Kullanıcıdan verileri al
-tur = st.selectbox("Tür", options=["Seçin", "Kedi", "Köpek"])
-sistem = st.selectbox("Sistem", options=["Seçin", "Bilinmiyor", "Boşaltım", "Deri", "Dolaşım", "Mix (en az 2 sistem)", "Sindirim", "Sinir", "Solunum"])
+tur = st.selectbox("Tür", options=["Seç", "Kedi", "Köpek"])
+sistem = st.selectbox("Sistem", options=["Seç", "Bilinmiyor", "Boşaltım", "Deri", "Dolaşım", "Mix (en az 2 sistem)", "Sindirim", "Sinir", "Solunum"])
 
 # Diğer veriler için sayısal giriş alanları (varsayılan boş, iki ondalık basamak)
 cBasebC = st.number_input("cBasebC")
-cBaseEcfc = st.number_input("cBaseEcfc", format="%.2f", step=0.01, value=None, key="cBaseEcfc", min_value=0.0)
-HCO3Pc = st.number_input("HCO3Pc", format="%.2f", step=0.01, value=None, key="HCO3Pc", min_value=0.0)
-p50c = st.number_input("p50c", format="%.2f", step=0.01, value=None, key="p50c", min_value=0.0)
-cHCO3Pst = st.number_input("cHCO3Pst", format="%.2f", step=0.01, value=None, key="cHCO3Pst", min_value=0.0)
-cNa = st.number_input("cNa", format="%.2f", step=0.01, value=None, key="cNa", min_value=0.0)
-FHHb = st.number_input("FHHb", format="%.2f", step=0.01, value=None, key="FHHb", min_value=0.0)
+cBaseEcfc = st.number_input("cBaseEcfc")
+HCO3Pc = st.number_input("HCO3Pc")
+p50c = st.number_input("p50c")
+cHCO3Pst = st.number_input("cHCO3Pst")
+cNa = st.number_input("cNa")
+FHHb = st.number_input("FHHb")
 sO2 = st.number_input("sO2", format="%.2f", step=0.01, value=None, key="sO2", min_value=0.0)
 GRAN = st.number_input("GRAN", format="%.2f", step=0.01, value=None, key="GRAN", min_value=0.0)
 LYM = st.number_input("LYM", format="%.2f", step=0.01, value=None, key="LYM", min_value=0.0)
