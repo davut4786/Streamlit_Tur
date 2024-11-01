@@ -98,6 +98,7 @@ st.markdown(
         background-color: blue;
         color: white;
         margin-top: 20px;
+        margin-bottom: 20px;
     }
     .stNumberInput {
         border: 2px solid blue;
