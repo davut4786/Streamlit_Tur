@@ -15,11 +15,11 @@ else:
     st.error("Model dosyası bulunamadı! Lütfen 'hastalikturu_model.pkl' dosyasının var olduğundan emin olun.")
 
 # Streamlit başlık
-st.title("Hastalık Türü Tahmin Uygulaması")
+st.title("Hastalık Tahmin Uygulaması")
 
 # Kullanıcıdan verileri al
-tur = st.selectbox("Tür", options=["Kedi", "Köpek"])
-sistem = st.selectbox("Sistem", options=["Bilinmiyor", "Boşaltım", "Deri", "Dolaşım", "Mix (en az 2 sistem)", "Sindirim", "Sinir", "Solunum"])
+tur = st.selectbox("Tür", options=["Seçin", "Kedi", "Köpek"])
+sistem = st.selectbox("Sistem", options=["Seçin", "Bilinmiyor", "Boşaltım", "Deri", "Dolaşım", "Mix (en az 2 sistem)", "Sindirim", "Sinir", "Solunum"])
 
 # Diğer veriler için sayısal giriş alanları (varsayılan boş, iki ondalık basamak)
 cBasebC = st.number_input("cBasebC", format="%.2f", step=0.01, value=None, key="cBasebC", min_value=0.0)
@@ -73,19 +73,25 @@ if st.button("Tahmin Et"):
         if value is None:
             empty_fields.append(key)
 
+    # "Tür" ve "Sistem" için varsayılan kontrol
+    if tur == "Seçin":
+        empty_fields.append("tur")
+    if sistem == "Seçin":
+        empty_fields.append("sistem")
+
     if empty_fields:
         # Boş alanları vurgulama
         for field in empty_fields:
             st.markdown(f"<style>#{field} {{ border: 2px solid red; }}</style>", unsafe_allow_html=True)
             # İmleci boş olan alana odaklamak için JavaScript ekleyin
             st.markdown(f"<script>document.getElementById('{field}').focus();</script>", unsafe_allow_html=True)
-        
-        st.error("Lütfen tüm sayısal değerleri giriniz.")
+
+        st.error("Lütfen tüm alanları doldurunuz.")
     else:
         # Model için giriş verilerini hazırlayın
         veriler = [
             1 if tur == "Köpek" else 0,
-            sistem.index(sistem),
+            sistem.index(sistem) - 1,  # "Seçin" durumu için bir ayarlama
             cBasebC, cBaseEcfc, HCO3Pc, p50c, cHCO3Pst, cNa, FHHb, sO2, GRAN, LYM, MON_A, HCT, MCH, MCHC,
             1 if abdominal_agri == "Var" else 0,
             1 if genel_durum == "Kötü" else 0,
