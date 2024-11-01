@@ -2,11 +2,30 @@ import streamlit as st
 import pickle
 import os
 
+# Artırma ve azaltma butonlarını gizlemek için CSS ekleyin
+st.markdown(
+    """
+    <style>
+    /* Chrome, Safari, Edge, Opera için */
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    /* Firefox için */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # Model dosyasının mevcut olup olmadığını kontrol edin
 model_path = 'hastalikturu_model.pkl'
 
 if os.path.exists(model_path):
-    if os.path.getsize(model_path) > 0:  # Check if the file is not empty
+    if os.path.getsize(model_path) > 0:  # Dosyanın boş olup olmadığını kontrol et
         with open(model_path, 'rb') as file:
             model = pickle.load(file)
     else:
@@ -22,7 +41,7 @@ tur = st.selectbox("Tür", options=["Seç", "Kedi", "Köpek"])
 sistem = st.selectbox("Sistem", options=["Seç", "Bilinmiyor", "Boşaltım", "Deri", "Dolaşım", "Mix (en az 2 sistem)", "Sindirim", "Sinir", "Solunum"])
 
 # Diğer veriler için sayısal giriş alanları (varsayılan boş, iki ondalık basamak)
-cBasebC = st.number_input("cBasebC",value=None, format="%.2f")
+cBasebC = st.number_input("cBasebC", value=None, format="%.2f")
 cBaseEcfc = st.number_input("cBaseEcfc", format="%.2f", value=None)
 HCO3Pc = st.number_input("HCO3Pc", format="%.2f", value=None)
 p50c = st.number_input("p50c", format="%.2f", value=None)
