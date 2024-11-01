@@ -14,25 +14,69 @@ else:
 # Streamlit başlık
 st.title("Hastalık Tahmin Uygulaması")
 
+# CSS styling for blue borders
+st.markdown(
+    """
+    <style>
+    .stNumberInput {
+        border: 2px solid blue;
+        border-radius: 5px;
+    }
+    .stSelectbox {
+        border: 2px solid blue;
+        border-radius: 5px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # Kullanıcıdan verileri al
 tur = st.selectbox("Tür", options=["Kedi", "Köpek"])
 sistem = st.selectbox("Sistem", options=["Bilinmiyor", "Boşaltım", "Deri", "Dolaşım", "Mix", "Sindirim", "Sinir", "Solunum"])
 
 # Diğer veriler için sayısal giriş alanları (varsayılan boş, iki ondalık basamak)
-cBasebC = st.number_input("cBasebC", format="%.2f", step=0.01, value=None)
-cBaseEcfc = st.number_input("cBaseEcfc", format="%.2f", step=0.01, value=None)
-HCO3Pc = st.number_input("HCO3Pc", format="%.2f", step=0.01, value=None)
-p50c = st.number_input("p50c", format="%.2f", step=0.01, value=None)
-cHCO3Pst = st.number_input("cHCO3Pst", format="%.2f", step=0.01, value=None)
-cNa = st.number_input("cNa", format="%.2f", step=0.01, value=None)
-FHHb = st.number_input("FHHb", format="%.2f", step=0.01, value=None)
-sO2 = st.number_input("sO2", format="%.2f", step=0.01, value=None)
-GRAN = st.number_input("GRAN", format="%.2f", step=0.01, value=None)
-LYM = st.number_input("LYM", format="%.2f", step=0.01, value=None)
-MON_A = st.number_input("MON_A", format="%.2f", step=0.01, value=None)
-HCT = st.number_input("HCT", format="%.2f", step=0.01, value=None)
-MCH = st.number_input("MCH", format="%.2f", step=0.01, value=None)
-MCHC = st.number_input("MCHC", format="%.2f", step=0.01, value=None)
+col1, col2, col3, col4, col5 = st.columns(5)
+
+with col1:
+    cBasebC = st.number_input("cBasebC", format="%.2f", step=None, value=None)
+with col2:
+    cBaseEcfc = st.number_input("cBaseEcfc", format="%.2f", step=None, value=None)
+with col3:
+    HCO3Pc = st.number_input("HCO3Pc", format="%.2f", step=None, value=None)
+with col4:
+    p50c = st.number_input("p50c", format="%.2f", step=None, value=None)
+with col5:
+    cHCO3Pst = st.number_input("cHCO3Pst", format="%.2f", step=None, value=None)
+
+# İkinci satır için sayısal giriş alanları
+col6, col7, col8, col9, col10 = st.columns(5)
+
+with col6:
+    cNa = st.number_input("cNa", format="%.2f", step=None, value=None)
+with col7:
+    FHHb = st.number_input("FHHb", format="%.2f", step=None, value=None)
+with col8:
+    sO2 = st.number_input("sO2", format="%.2f", step=None, value=None)
+with col9:
+    GRAN = st.number_input("GRAN", format="%.2f", step=None, value=None)
+with col10:
+    LYM = st.number_input("LYM", format="%.2f", step=None, value=None)
+
+# Üçüncü satır için sayısal giriş alanları
+col11, col12, col13, col14, col15 = st.columns(5)
+
+with col11:
+    MON_A = st.number_input("MON_A", format="%.2f", step=None, value=None)
+with col12:
+    HCT = st.number_input("HCT", format="%.2f", step=None, value=None)
+with col13:
+    MCH = st.number_input("MCH", format="%.2f", step=None, value=None)
+with col14:
+    MCHC = st.number_input("MCHC", format="%.2f", step=None, value=None)
+with col15:
+    # Bu kutuyu boş bıraktık, eğer ek bir alan istiyorsanız burayı düzenleyebilirsiniz.
+    st.empty()
 
 # Evet/Hayır seçenekleri için `selectbox` seçenekleri
 abdominal_agri = st.selectbox("Abdominal Ağrı", options=["Hayır", "Evet"])
