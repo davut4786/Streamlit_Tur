@@ -18,8 +18,8 @@ else:
 st.title("Hastalık Tahmin Uygulaması")
 
 # Kullanıcıdan verileri al
-tur = st.selectbox("Tür", options=["Seç", "Kedi", "Köpek"])
-sistem = st.selectbox("Sistem", options=["Seç", "Bilinmiyor", "Boşaltım", "Deri", "Dolaşım", "Mix (en az 2 sistem)", "Sindirim", "Sinir", "Solunum"])
+tur = st.selectbox("Tür", options=["Seçin", "Kedi", "Köpek"])
+sistem = st.selectbox("Sistem", options=["Seçin", "Bilinmiyor", "Boşaltım", "Deri", "Dolaşım", "Mix (en az 2 sistem)", "Sindirim", "Sinir", "Solunum"])
 
 # Diğer veriler için sayısal giriş alanları (varsayılan boş, iki ondalık basamak)
 cBasebC = st.number_input("cBasebC", format="%.2f", step=0.01, value=None, key="cBasebC", min_value=0.0)
@@ -69,24 +69,30 @@ if st.button("Tahmin Et"):
         "MCHC": MCHC,
     }
 
-    for key, value in input_keys.items():
-        if value is None:
-            empty_fields.append(key)
-
     # "Tür" ve "Sistem" için varsayılan kontrol
     if tur == "Seçin":
-        empty_fields.append("tur")
+        empty_fields.append("Tür")
     if sistem == "Seçin":
-        empty_fields.append("sistem")
+        empty_fields.append("Sistem")
+
+    for key, value in input_keys.items():
+        if value is None:
+            empty_fields.append(f"{key} (sayısal değer)")
 
     if empty_fields:
+        # Hata mesajı oluşturma
+        error_messages = []
+        for field in empty_fields:
+            error_messages.append(f"Lütfen {field} giriniz.")
+        
+        # Hata mesajlarını göster
+        st.error(" ".join(error_messages))
+
         # Boş alanları vurgulama
         for field in empty_fields:
             st.markdown(f"<style>#{field} {{ border: 2px solid red; }}</style>", unsafe_allow_html=True)
             # İmleci boş olan alana odaklamak için JavaScript ekleyin
             st.markdown(f"<script>document.getElementById('{field}').focus();</script>", unsafe_allow_html=True)
-
-        st.error("Lütfen tüm alanları doldurunuz.")
     else:
         # Model için giriş verilerini hazırlayın
         veriler = [
