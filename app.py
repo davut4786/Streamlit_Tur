@@ -2,25 +2,6 @@ import streamlit as st
 import pickle
 import os
 
-# Artırma ve azaltma butonlarını gizlemek için CSS ekleyin
-st.markdown(
-    """
-    <style>
-    /* Chrome, Safari, Edge, Opera için */
-    input[type=number]::-webkit-outer-spin-button,
-    input[type=number]::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-    /* Firefox için */
-    input[type=number] {
-        -moz-appearance: textfield;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
 # Model dosyasının mevcut olup olmadığını kontrol edin
 model_path = 'hastalikturu_model.pkl'
 
