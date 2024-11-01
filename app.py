@@ -50,25 +50,29 @@ oksuruk = st.selectbox("Öksürük", options=["Yok", "Var"])
 
 # Tahmin işlemi
 if st.button("Tahmin Et"):
-    # Model için giriş verilerini hazırlayın
-    veriler = [
-        1 if tur == "Köpek" else 0,
-        sistem.index(sistem),
-        cBasebC, cBaseEcfc, HCO3Pc, p50c, cHCO3Pst, cNa, FHHb, sO2, GRAN, LYM, MON_A, HCT, MCH, MCHC,
-        1 if abdominal_agri == "Var" else 0,
-        1 if genel_durum == "Kötü" else 0,
-        1 if idar_problemi == "Var" else 0,
-        1 if inkordinasyon == "Var" else 0,
-        1 if ishal == "Var" else 0,
-        1 if istahsizlik == "Var" else 0,
-        1 if kanama == "Var" else 0,
-        1 if kusma == "Var" else 0,
-        1 if oksuruk == "Var" else 0
-    ]
+    # Giriş verilerini kontrol et
+    if None in [cBasebC, cBaseEcfc, HCO3Pc, p50c, cHCO3Pst, cNa, FHHb, sO2, GRAN, LYM, MON_A, HCT, MCH, MCHC]:
+        st.error("Lütfen tüm sayısal değerleri giriniz.")
+    else:
+        # Model için giriş verilerini hazırlayın
+        veriler = [
+            1 if tur == "Köpek" else 0,
+            sistem.index(sistem),
+            cBasebC, cBaseEcfc, HCO3Pc, p50c, cHCO3Pst, cNa, FHHb, sO2, GRAN, LYM, MON_A, HCT, MCH, MCHC,
+            1 if abdominal_agri == "Var" else 0,
+            1 if genel_durum == "Kötü" else 0,
+            1 if idar_problemi == "Var" else 0,
+            1 if inkordinasyon == "Var" else 0,
+            1 if ishal == "Var" else 0,
+            1 if istahsizlik == "Var" else 0,
+            1 if kanama == "Var" else 0,
+            1 if kusma == "Var" else 0,
+            1 if oksuruk == "Var" else 0
+        ]
 
-    # Model tahmini ve sonuç gösterme
-    try:
-        sonuc = model.predict([veriler])
-        st.write(f"Tahmin Sonucu: {sonuc[0]}")
-    except Exception as e:
-        st.error(f"Hata oluştu: {e}")
+        # Model tahmini ve sonuç gösterme
+        try:
+            sonuc = model.predict([veriler])
+            st.write(f"Tahmin Sonucu: {sonuc[0]}")
+        except Exception as e:
+            st.error(f"Hata oluştu: {e}")
