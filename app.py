@@ -21,21 +21,21 @@ st.title("Hastalık Durumu Tahmin Uygulaması")
 tur = st.selectbox("Tür", options=["Seç", "Kedi", "Köpek"])
 sistem = st.selectbox("Sistem", options=["Seç", "Bilinmiyor", "Boşaltım", "Deri", "Dolaşım", "Mix (en az 2 sistem)", "Sindirim", "Sinir", "Solunum"])
 
-# Diğer veriler için sayısal giriş alanları (varsayılan boş, iki ondalık basamak)
-cBasebC = st.number_input("cBasebC")
-cBaseEcfc = st.number_input("cBaseEcfc")
-HCO3Pc = st.number_input("HCO3Pc")
-p50c = st.number_input("p50c")
-cHCO3Pst = st.number_input("cHCO3Pst")
-cNa = st.number_input("cNa")
-FHHb = st.number_input("FHHb")
-sO2 = st.number_input("sO2", format="%.2f", step=0.01, value=None, key="sO2", min_value=0.0)
-GRAN = st.number_input("GRAN", format="%.2f", step=0.01, value=None, key="GRAN", min_value=0.0)
-LYM = st.number_input("LYM", format="%.2f", step=0.01, value=None, key="LYM", min_value=0.0)
-MON_A = st.number_input("MON_A", format="%.2f", step=0.01, value=None, key="MON_A", min_value=0.0)
-HCT = st.number_input("HCT", format="%.2f", step=0.01, value=None, key="HCT", min_value=0.0)
-MCH = st.number_input("MCH", format="%.2f", step=0.01, value=None, key="MCH", min_value=0.0)
-MCHC = st.number_input("MCHC", format="%.2f", step=0.01, value=None, key="MCHC", min_value=0.0)
+# Diğer veriler için sayısal giriş alanları (varsayılan boş)
+cBasebC = st.number_input("cBasebC", value=None)
+cBaseEcfc = st.number_input("cBaseEcfc", value=None)
+HCO3Pc = st.number_input("HCO3Pc", value=None)
+p50c = st.number_input("p50c", value=None)
+cHCO3Pst = st.number_input("cHCO3Pst", value=None)
+cNa = st.number_input("cNa", value=None)
+FHHb = st.number_input("FHHb", value=None)
+sO2 = st.number_input("sO2", value=None)
+GRAN = st.number_input("GRAN", value=None)
+LYM = st.number_input("LYM", value=None)
+MON_A = st.number_input("MON_A", value=None)
+HCT = st.number_input("HCT", value=None)
+MCH = st.number_input("MCH", value=None)
+MCHC = st.number_input("MCHC", value=None)
 
 # Evet/Hayır seçenekleri için `selectbox` seçenekleri
 abdominal_agri = st.selectbox("Abdominal Ağrı", options=["Yok", "Var"])
@@ -70,9 +70,9 @@ if st.button("Tahmin Et"):
     }
 
     # "Tür" ve "Sistem" için varsayılan kontrol
-    if tur == "Seçin":
+    if tur == "Seç":
         empty_fields.append("Tür")
-    if sistem == "Seçin":
+    if sistem == "Seç":
         empty_fields.append("Sistem")
 
     for key, value in input_keys.items():
@@ -87,17 +87,11 @@ if st.button("Tahmin Et"):
         
         # Hata mesajlarını göster
         st.error(" ".join(error_messages))
-
-        # Boş alanları vurgulama
-        for field in empty_fields:
-            st.markdown(f"<style>#{field} {{ border: 2px solid red; }}</style>", unsafe_allow_html=True)
-            # İmleci boş olan alana odaklamak için JavaScript ekleyin
-            st.markdown(f"<script>document.getElementById('{field}').focus();</script>", unsafe_allow_html=True)
     else:
         # Model için giriş verilerini hazırlayın
         veriler = [
             1 if tur == "Köpek" else 0,
-            sistem.index(sistem) - 1,  # "Seçin" durumu için bir ayarlama
+            sistem.index(sistem) - 1,  # "Seç" durumu için bir ayarlama
             cBasebC, cBaseEcfc, HCO3Pc, p50c, cHCO3Pst, cNa, FHHb, sO2, GRAN, LYM, MON_A, HCT, MCH, MCHC,
             1 if abdominal_agri == "Var" else 0,
             1 if genel_durum == "Kötü" else 0,
@@ -106,7 +100,7 @@ if st.button("Tahmin Et"):
             1 if ishal == "Var" else 0,
             1 if istahsizlik == "Var" else 0,
             1 if kanama == "Var" else 0,
-            1 if kusma == "Var" else 0,
+            1 if kusma == "Evet" else 0,
             1 if oksuruk == "Var" else 0
         ]
 
