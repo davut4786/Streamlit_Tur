@@ -16,7 +16,7 @@ st.title("Hastalık Tahmin Uygulaması")
 
 # Kullanıcıdan verileri al
 tur = st.selectbox("Tür", options=["Kedi", "Köpek"])
-sistem = st.selectbox("Sistem", options=["Bilinmiyor", "Boşaltım", "Deri", "Dolaşım", "Mix", "Sindirim", "Sinir", "Solunum"])
+sistem = st.selectbox("Sistem", options=["Bilinmiyor", "Boşaltım", "Deri", "Dolaşım", "Mix (en az 2 sistem)", "Sindirim", "Sinir", "Solunum"])
 
 # Diğer veriler için sayısal giriş alanları (varsayılan boş, iki ondalık basamak)
 cBasebC = st.number_input("cBasebC", format="%.2f", step=0.01, value=None)
