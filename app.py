@@ -51,7 +51,25 @@ oksuruk = st.selectbox("Öksürük", options=["Yok", "Var"])
 # Tahmin işlemi
 if st.button("Tahmin Et"):
     # Giriş verilerini kontrol et
-    if None in [cBasebC, cBaseEcfc, HCO3Pc, p50c, cHCO3Pst, cNa, FHHb, sO2, GRAN, LYM, MON_A, HCT, MCH, MCHC]:
+    empty_fields = []
+    if cBasebC is None: empty_fields.append("cBasebC")
+    if cBaseEcfc is None: empty_fields.append("cBaseEcfc")
+    if HCO3Pc is None: empty_fields.append("HCO3Pc")
+    if p50c is None: empty_fields.append("p50c")
+    if cHCO3Pst is None: empty_fields.append("cHCO3Pst")
+    if cNa is None: empty_fields.append("cNa")
+    if FHHb is None: empty_fields.append("FHHb")
+    if sO2 is None: empty_fields.append("sO2")
+    if GRAN is None: empty_fields.append("GRAN")
+    if LYM is None: empty_fields.append("LYM")
+    if MON_A is None: empty_fields.append("MON_A")
+    if HCT is None: empty_fields.append("HCT")
+    if MCH is None: empty_fields.append("MCH")
+    if MCHC is None: empty_fields.append("MCHC")
+
+    if empty_fields:
+        for field in empty_fields:
+            st.markdown(f"<style>#{field} {{ border: 2px solid red; }}</style>", unsafe_allow_html=True)
         st.error("Lütfen tüm sayısal değerleri giriniz.")
     else:
         # Model için giriş verilerini hazırlayın
