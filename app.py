@@ -15,7 +15,7 @@ else:
     st.error("Model dosyası bulunamadı! Lütfen 'hastalikturu_model.pkl' dosyasının var olduğundan emin olun.")
 
 # Streamlit başlık
-st.title("Hastalık Durumu Tahmin Uygulaması")
+st.title("Hastalık Türü Tahmin Uygulaması")
 
 # Kullanıcıdan verileri al
 tur = st.selectbox("Tür", options=["Seç", "Kedi", "Köpek"])
